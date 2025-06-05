@@ -25,7 +25,7 @@ export default function Summary() {
     console.log("요청 날짜:", date);
     try {
       const response = await axios.get(
-        `http://localhost:8000/summary/summary?date=${date}`
+        `/api/summary/summary?date=${date}`
       );
       setSummary(response.data.summary);
     } catch (err) {
