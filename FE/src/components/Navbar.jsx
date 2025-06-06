@@ -18,7 +18,7 @@ export default function Navbar() {
   return (
     <nav className="flex flex-col items-center pt-8 pb-2 mb-8 bg-white">
       
-      // 로고/타이틀
+      
 
       <Link
         to="/"
@@ -29,7 +29,7 @@ export default function Navbar() {
       </Link>
 
       
-      // 네비 메뉴
+      
       <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-lg md:text-2xl mb-3">
 
         {menus.map(({ to, text }) => (
@@ -43,7 +43,7 @@ export default function Navbar() {
       </div>
      
 
-      // 밑줄 라인
+      
       <div className="border-b border-gray-300 w-full max-w-3xl" />
     </nav>
   );

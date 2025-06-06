@@ -49,7 +49,7 @@ export default function Summary() {
           </p>
 
           
-          // 오늘 버튼
+          
           <button
             onClick={() => fetchSummary(today)}
             className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded shadow mb-6"
@@ -59,7 +59,7 @@ export default function Summary() {
           </button>
 
           
-          // 최근 날짜 선택
+          
           <div className="mb-8 text-sm text-gray-700">
             <label htmlFor="dateSelect" className="mr-2">
               📅 최근 날짜 선택:
@@ -83,13 +83,13 @@ export default function Summary() {
           </div>
  
       
-          // 에러 메시지 표시
+          
           {error && (
             <p className="text-red-500 font-semibold mb-4">{error}</p>
           )}
 
         
-          // 요약 결과
+          
           <div className="space-y-4 text-left">
             {summary
               .filter((line) => line.trim() !== "")

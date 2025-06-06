@@ -165,7 +165,7 @@ export default function Portfolio() {
               </div>
 
               
-              // 이전 / 다음 버튼
+              
               <div className="flex justify-between">
                 <button
                   onClick={() => setStep(step - 1)}
