@@ -13,7 +13,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(home.router, tags=["Home"])
-app.include_router(summary.router, prefix="/summary", tags=["Summary"])
-app.include_router(portfolio.router, prefix="/portfolio", tags=["Portfolio"])
-app.include_router(chatbot.router, prefix="/chatbot", tags=["Chatbot"])
+app.include_router(home.router, prefix="/api", tags=["Home"])
+app.include_router(summary.router, prefix="/api/summary", tags=["Summary"])
+app.include_router(portfolio.router, prefix="/api/portfolio", tags=["Portfolio"])
+app.include_router(chatbot.router, prefix="/api/chatbot", tags=["Chatbot"])

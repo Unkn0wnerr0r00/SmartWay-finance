@@ -11,17 +11,16 @@ from pinecone import Pinecone, ServerlessSpec
 
 router = APIRouter()
 
-# ==== 설정 ====
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 sbert = SentenceTransformer("snunlp/KR-SBERT-V40K-klueNLI-augSTS")
 pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"), serverless=ServerlessSpec(cloud="aws", region="us-east-1"))
 index = pc.Index("finance-news")
 
-# ==== 입력 모델 ====
+
 class ChatInput(BaseModel):
     question: str
 
-# ==== 유틸 함수들 ====
+
 
 def classify_question(prompt: str) -> str:
     classification_prompt = f"""
@@ -89,7 +88,7 @@ def get_news_context(metadata: List[Dict]) -> str:
                 break
     return "\n\n".join([f"[{n['date']}] {n['content']}" for n in matched_news if n["content"]])
 
-# ==== 스트리밍 응답 생성기 ====
+
 def stream_answer(question: str):
     qtype = classify_question(question)
 
@@ -124,7 +123,7 @@ def stream_answer(question: str):
         yield "질문 분류에 실패했습니다."
         return
 
-    # Streaming LLM 호출
+    
     stream = client.chat.completions.create(
         model="gpt-4o",
         messages=[{"role": "user", "content": prompt}],

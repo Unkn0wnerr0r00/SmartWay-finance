@@ -20,7 +20,7 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
 
-            {/* 포트폴리오 카드 */}
+            
             <div
               onClick={() => navigate("/portfolio")}
               className="cursor-pointer bg-white p-6 rounded-xl shadow hover:bg-blue-100 transition"
@@ -31,7 +31,7 @@ export default function Home() {
               </p>
             </div>
             
-            {/* 뉴스 요약 카드 */}
+            
             <div
               onClick={() => navigate("/summary")}
               className="cursor-pointer bg-white p-6 rounded-xl shadow hover:bg-blue-100 transition"
@@ -43,7 +43,7 @@ export default function Home() {
             </div>
 
 
-            {/* 챗봇 카드 */}
+            
             <div
               onClick={() => navigate("/chat")}
               className="cursor-pointer bg-white p-6 rounded-xl shadow hover:bg-blue-100 transition"

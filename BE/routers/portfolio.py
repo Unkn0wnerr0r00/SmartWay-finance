@@ -14,19 +14,17 @@ import json
 from dotenv import load_dotenv
 load_dotenv()
 
-# --- 초기화 ---
+
 client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 sbert = SentenceTransformer("snunlp/KR-SBERT-V40K-klueNLI-augSTS")
 pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"], serverless=ServerlessSpec(cloud="aws", region="us-east-1"))
 index = pc.Index("finance-news")
 
-# --- FastAPI 라우터 설정 ---
 router = APIRouter()
 
 class SurveyRequest(BaseModel):
     responses: Dict[str, Union[str, List[str]]]
 
-# --- 프롬프트 생성 ---
 def generate_prompt(responses):
     return f"""
 당신은 금융 전문가입니다. 아래 사용자의 재무 상태와 금융 니즈를 바탕으로, 실현 가능한 금융 전략을 추천해 주세요.
@@ -53,7 +51,7 @@ def generate_prompt(responses):
 위 정보를 기반으로 포트폴리오를 추천해 주세요. 단순 상품 나열이 아닌 전략적인 자산 구성과 그 이유, 비중, 운용 팁을 포함해 주세요.
 """.strip()
 
-# --- GPT 전략 생성 ---
+
 def get_strategy(prompt):
     response = client.chat.completions.create(
         model="gpt-4o-mini",
@@ -66,7 +64,7 @@ def get_strategy(prompt):
     )
     return response.choices[0].message.content
 
-# --- 키워드 추출 ---
+
 def extract_keywords(strategy_text, top_k=5):
     prompt = f"""
 당신은 금융 검색 전문가입니다.
@@ -92,7 +90,7 @@ def extract_keywords(strategy_text, top_k=5):
     keywords = [line.lstrip("0123456789.-•·● ").strip() for line in text.splitlines() if line.strip()]
     return keywords[:top_k]
 
-# --- Pinecone 뉴스 검색 ---
+
 def search_news_from_keywords(keywords, top_k=10, days=30):
     query_vector = sbert.encode(" ".join(keywords)).tolist()
     result = index.query(vector=query_vector, top_k=top_k * 5, include_metadata=True)
@@ -113,7 +111,7 @@ def search_news_from_keywords(keywords, top_k=10, days=30):
 
     return filtered
 
-# --- S3에서 뉴스 본문 가져오기 ---
+
 def load_news_from_s3(date):
     session = boto3.Session(
         aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
@@ -131,7 +129,7 @@ def load_news_from_s3(date):
     except Exception:
         return []
 
-# --- 뉴스 매칭 및 요약 ---
+
 def match_news_and_summarize(metadata):
     news_by_date = {date[:10]: load_news_from_s3(date[:10]) for date in {m['date'][:10] for m in metadata}}
 
@@ -166,7 +164,7 @@ def match_news_and_summarize(metadata):
     summary = llm.invoke(prompt.format(context=context))
     return summary.content, matched_news
 
-# --- 전략 보정 ---
+
 strategy_refine_prompt = PromptTemplate.from_template("""
 당신은 숙련된 금융 전략가입니다. 아래의 사용자의 초기 전략을 바탕으로,
 최근 시장 뉴스 흐름을 반영하여 전략을 보완하거나 수정해 주세요.
@@ -189,7 +187,7 @@ def refine_strategy_with_news(strategy, news_summary):
     llm = ChatOpenAI(model_name="gpt-4o", temperature=0.4)
     return llm.invoke(prompt).content
 
-# --- API 엔드포인트 ---
+
 @router.post("/recommend")
 def portfolio_recommend(request: SurveyRequest):
     prompt = generate_prompt(request.responses)

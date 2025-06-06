@@ -4,6 +4,7 @@ import Layout from "../components/Layout";
 import ReactMarkdown from "react-markdown";
 
 
+
 export default function Summary() {
   const [summary, setSummary] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -47,7 +48,8 @@ export default function Summary() {
             아래 버튼을 눌러 오늘의 뉴스를 확인하거나, 날짜를 선택해 이전 뉴스도 확인해보세요.
           </p>
 
-          {/* 오늘 버튼 */}
+          
+          // 오늘 버튼
           <button
             onClick={() => fetchSummary(today)}
             className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded shadow mb-6"
@@ -56,7 +58,8 @@ export default function Summary() {
             {loading ? "불러오는 중..." : "오늘의 뉴스 요약 보기"}
           </button>
 
-          {/* 날짜 선택 */}
+          
+          // 최근 날짜 선택
           <div className="mb-8 text-sm text-gray-700">
             <label htmlFor="dateSelect" className="mr-2">
               📅 최근 날짜 선택:
@@ -78,13 +81,15 @@ export default function Summary() {
               ))}
             </select>
           </div>
-
-          {/* 에러 메시지 */}
+ 
+      
+          // 에러 메시지 표시
           {error && (
             <p className="text-red-500 font-semibold mb-4">{error}</p>
           )}
 
-          {/* 요약 결과 */}
+        
+          // 요약 결과
           <div className="space-y-4 text-left">
             {summary
               .filter((line) => line.trim() !== "")
