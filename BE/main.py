@@ -7,9 +7,16 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000",
-                   "http://3.39.226.251",               # 배포된 FE 주소
-                   "http://3.39.226.251:80"],  # React 개발 서버 주소
+    allow_origins=[
+    "http://localhost:3000",
+    "http://3.39.226.251",
+    "http://3.39.226.251:80",
+    "http://unknownerror.click",
+    "https://unknownerror.click",
+    "http://www.unknownerror.click",
+    "https://www.unknownerror.click"
+]
+,  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
