@@ -36,8 +36,8 @@ export default function Chat() {
       done = doneReading;
       if (value) {
         const chunk = decoder.decode(value);
-        
 
+        
         // 실시간 메시지 추가
         setMessages((prev) => {
           const last = prev[prev.length - 1];
