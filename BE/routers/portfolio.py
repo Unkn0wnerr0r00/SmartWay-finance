@@ -54,7 +54,7 @@ def generate_prompt(responses):
 
 def get_strategy(prompt):
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4o",
         messages=[
             {"role": "system", "content": "당신은 금융 전략 추천 전문가입니다."},
             {"role": "user", "content": prompt}
@@ -184,7 +184,7 @@ strategy_refine_prompt = PromptTemplate.from_template("""
 
 def refine_strategy_with_news(strategy, news_summary):
     prompt = strategy_refine_prompt.format(strategy=strategy, news_summary=news_summary)
-    llm = ChatOpenAI(model_name="gpt-4o", temperature=0.4)
+    llm = ChatOpenAI(model_name="gpt-4o", temperature=0.3)
     return llm.invoke(prompt).content
 
 
@@ -194,7 +194,7 @@ def portfolio_recommend(request: SurveyRequest):
     initial_strategy = get_strategy(prompt)
     keywords = extract_keywords(initial_strategy)
     metadata = search_news_from_keywords(keywords)
-    news_summary, matched_news = match_news_and_summarize(metadata)
+    news_summary = match_news_and_summarize(metadata)
     final_strategy = refine_strategy_with_news(initial_strategy, news_summary)
 
     return {
